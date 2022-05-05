@@ -2,14 +2,15 @@ package com.mindorks.kotlinFlow.learn.search
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.mindorks.kotlinFlow.R
+import com.mindorks.kotlinFlow.databinding.ActivitySearchBinding
 import com.mindorks.kotlinFlow.utils.getQueryTextChangeStateFlow
-import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import kotlin.coroutines.CoroutineContext
 
 class SearchActivity : AppCompatActivity(), CoroutineScope {
+
+    private lateinit var binding: ActivitySearchBinding
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main + job
@@ -18,7 +19,8 @@ class SearchActivity : AppCompatActivity(), CoroutineScope {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
+        binding = ActivitySearchBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         job = Job()
         setUpSearchStateFlow()
     }
@@ -30,11 +32,11 @@ class SearchActivity : AppCompatActivity(), CoroutineScope {
 
     private fun setUpSearchStateFlow() {
         launch {
-            searchView.getQueryTextChangeStateFlow()
+            binding.searchView.getQueryTextChangeStateFlow()
                 .debounce(300)
                 .filter { query ->
                     if (query.isEmpty()) {
-                        textViewResult.text = ""
+                        binding.textViewResult.text = ""
                         return@filter false
                     } else {
                         return@filter true
@@ -49,7 +51,7 @@ class SearchActivity : AppCompatActivity(), CoroutineScope {
                 }
                 .flowOn(Dispatchers.Default)
                 .collect { result ->
-                    textViewResult.text = result
+                    binding.textViewResult.text = result
                 }
         }
     }

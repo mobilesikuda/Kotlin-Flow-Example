@@ -11,20 +11,25 @@ import com.mindorks.kotlinFlow.data.api.ApiHelperImpl
 import com.mindorks.kotlinFlow.data.api.RetrofitBuilder
 import com.mindorks.kotlinFlow.data.local.DatabaseBuilder
 import com.mindorks.kotlinFlow.data.local.DatabaseHelperImpl
+import com.mindorks.kotlinFlow.databinding.ActivityCompletionBinding
 import com.mindorks.kotlinFlow.learn.base.ApiUserAdapter
 import com.mindorks.kotlinFlow.utils.Status
 import com.mindorks.kotlinFlow.utils.ViewModelFactory
-import kotlinx.android.synthetic.main.activity_long_running_task.*
-import kotlinx.android.synthetic.main.activity_recycler_view.progressBar
+//import kotlinx.android.synthetic.main.activity_long_running_task.*
+//import kotlinx.android.synthetic.main.activity_recycler_view.progressBar
 
 class CompletionActivity : AppCompatActivity() {
 
     private lateinit var viewModel: CompletionViewModel
     private lateinit var adapter: ApiUserAdapter
+    private lateinit var binding: ActivityCompletionBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_completion)
+
+        binding = ActivityCompletionBinding.inflate(layoutInflater)
+        val viewAll = binding.root
+        setContentView(viewAll)
         setupViewModel()
         setupObserver()
     }
@@ -33,17 +38,17 @@ class CompletionActivity : AppCompatActivity() {
         viewModel.getStatus().observe(this, Observer {
             when (it.status) {
                 Status.SUCCESS -> {
-                    progressBar.visibility = View.GONE
-                    textView.text = it.data
-                    textView.visibility = View.VISIBLE
+                    binding.progressBar.visibility = View.GONE
+                    binding.textView.text = it.data
+                    binding.textView.visibility = View.VISIBLE
                 }
                 Status.LOADING -> {
-                    progressBar.visibility = View.VISIBLE
-                    textView.visibility = View.GONE
+                    binding.progressBar.visibility = View.VISIBLE
+                    binding.textView.visibility = View.GONE
                 }
                 Status.ERROR -> {
                     //Handle Error
-                    progressBar.visibility = View.GONE
+                    binding.progressBar.visibility = View.GONE
                     Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
                 }
             }

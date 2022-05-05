@@ -3,11 +3,13 @@ package com.mindorks.kotlinFlow.learn.base
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.mindorks.kotlinFlow.R
 import com.mindorks.kotlinFlow.data.local.entity.User
-import kotlinx.android.synthetic.main.item_layout.view.*
+//import kotlinx.android.synthetic.main.item_layout.view.*
 
 class UserAdapter(
     private val users: ArrayList<User>
@@ -15,11 +17,17 @@ class UserAdapter(
 
     class DataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(user: User) {
-            itemView.textViewUserName.text = user.name
-            itemView.textViewUserEmail.text = user.email
-            Glide.with(itemView.imageViewAvatar.context)
+
+            val UserName: TextView = itemView.findViewById(R.id.textViewUserName)
+            val UserEmail: TextView = itemView.findViewById(R.id.textViewUserEmail)
+            val ViewAvatar: ImageView = itemView.findViewById(R.id.imageViewAvatar)
+
+            UserName.text = user.name
+            UserEmail.text = user.email
+            Glide.with(ViewAvatar.context)
                 .load(user.avatar)
-                .into(itemView.imageViewAvatar)
+                .into(ViewAvatar)
+
         }
     }
 
