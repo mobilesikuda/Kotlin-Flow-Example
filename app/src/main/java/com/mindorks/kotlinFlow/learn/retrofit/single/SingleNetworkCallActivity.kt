@@ -26,7 +26,8 @@ class SingleNetworkCallActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        binding = ActivityRecyclerViewBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         setupUI()
         setupViewModel()
         setupObserver()
